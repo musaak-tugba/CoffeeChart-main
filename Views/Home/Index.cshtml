@@ -1,0 +1,79 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row" style="display: flex; justify-content: center; align-items: center; height: 70vh; text-align: center;">
+    <select id="chartTypeSelect" style="margin-bottom: 15px; padding: 8px; font-size: 14px;">
+        <option value="bar">Çubuk Grafik</option>
+        <option value="line">Çizgi Grafik</option>
+        <option value="radar">Radar Grafik</option>
+        <option value="pie">Pasta Grafik</option>
+    </select>
+    <canvas id="chartCanvas" style="width: 70%; height: 50%;"></canvas>
+</div>
+
+<div style="text-align: right; margin-right: 20px;">
+    <form method="post" action="/Home/Logout" style="display: inline;">
+        <button type="submit" style="background-color: #A0735F; color: white; border: none; padding: 8px 16px">
+            Çıkış
+        </button>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        try {
+            var chartData = JSON.parse('@Html.Raw(ViewBag.ChartData)');
+            if (!chartData || chartData.length === 0) {
+                console.error("Geçersiz veya boş JSON verisi:", chartData);
+                return;
+            }
+
+           // console.log(chartData);
+
+            const labels = chartData.map(d => d.Year);
+            const values = chartData.map(d => d.Consumption);
+
+            const backgroundColor = ["rgba(160, 115, 95, 0.4)"];
+            const borderColor = ["rgba(160, 115, 95, 1)"];
+            const ctx = document.getElementById('chartCanvas').getContext('2d');
+
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Kahve Tüketimi',
+                        data: values,
+                        backgroundColor: backgroundColor[0],
+                        borderColor: borderColor[0],
+                        borderWidth: 2
+                    }]
+                }
+            });
+
+            $('#chartTypeSelect').on('change', function () {
+                var selectedType = $(this).val();
+
+                myChart.destroy();
+                myChart = new Chart(ctx, {
+                    type: selectedType,
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Kahve Tüketimi',
+                            data: values,
+                            backgroundColor: backgroundColor[0],
+                            borderColor: borderColor[0],
+                            borderWidth: 2
+                        }]
+                    }
+                });
+            });
+        } catch (e) {
+            console.error("Err Message:",e);
+        }
+    });
+</script>

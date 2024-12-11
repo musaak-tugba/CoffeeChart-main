@@ -1,0 +1,52 @@
+@{
+ViewData["Title"] = "Login";
+}
+<style>
+    .btn-brown {
+
+    background-color: #b67854;
+    border-color: #b67854;
+}
+.btn-brown:hover {
+    background-color: #6b4226;
+    border-color: #6b4226;
+}
+.Lgn{
+    margin-bottom: 1vh;
+    padding: 5vh;
+    border:solid 1px #875533;
+    background-color: rgba(182, 120, 84, 0.1);
+}
+
+</style>
+<h2 style="color: #6b4226; text-align: center;">Login</h2>
+
+<form method="post" asp-action="Login" class="container Lgn" style="max-width: 400px; margin-top: 50px">
+  
+
+        <div class="mb-3">
+            <label for="DatabaseName" class="form-label text-brown">Veritabanı Seçin:</label>
+            <select name="DatabaseName" id="DatabaseName" required class="form-select">
+                <option value="CoffeeChart.db">CoffeeChart.db</option>
+                <option value="CoffeeChartNew.db">CoffeeChartNew.db</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="Username" class="form-label text-brown">Kullanıcı Adı:</label>
+            <input type="text" id="Username" name="Username" required class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="Password" class="form-label text-brown">Şifre:</label>
+            <input type="password" id="Password" name="Password" required class="form-control">
+        </div>
+        <button type="submit" class="btn btn-brown w-100">Giriş Yap</button>
+  
+</form>
+
+
+@if (ViewBag.ErrorMessage != null)
+{
+<div style="color: red; text-align: center; margin-top: 10px;">
+    <strong>@ViewBag.ErrorMessage</strong>
+</div>
+}
